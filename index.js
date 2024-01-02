@@ -7,6 +7,12 @@ const masterKey = "4VGP2DN-6EWM4SJ-N6FGRHV-Z3PR3TT";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+
+app.get('/', (req, res)=>{
+  
+})
+
 //1. GET a random joke
 
 app.get('/random', function (req, res) {
