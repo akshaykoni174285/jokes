@@ -1,2 +1,2 @@
 # jokes
-a simple app using nodejs and express and rests api 
+a simple app using nodejs and express and restfull api 
