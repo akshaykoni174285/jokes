@@ -10,6 +10,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.get('/', (req, res)=>{
+  res.json({
+    welcome: 'try different endpoints to access apis',
+  })
   
 })
 
