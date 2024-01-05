@@ -23,7 +23,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: akshay174285/jokes-mini
+        tags: jokes-mini:latest
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
