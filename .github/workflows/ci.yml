@@ -1,0 +1,66 @@
+# .github/workflows/ci.yml
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker/setup-docker@v2
+      with:
+        dockerfile: Dockerfile  # Replace with your Dockerfile path
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: jokes-mini
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy using webhook
+      env:
+        deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+      run: |
+        curl "$deploy_url"
+        # Add your deployment script or call the webhook here
+        # Replace the following line with your actual deployment command or webhook call
+        echo "Deployment script or webhook call goes here"
+
+
+
+
+
+
+
+
+
+
+
+
+        # jobs:
+#   ci:
+#     runs-on: ubuntu-latest
+#     steps:
+
+#       - name: Deploy
+#         # Only run this step if the branch is main
+#         if: github.ref == 'refs/heads/main'
+#         env:
+#           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+#         run: |
+#           curl "$deploy_url"
