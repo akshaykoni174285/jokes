@@ -30,7 +30,6 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ steps.build.outcome == 'success' }}
     steps:
     - name: Deploy using webhook
       env:
