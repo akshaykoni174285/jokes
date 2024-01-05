@@ -9,39 +9,36 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Docker
-      uses: docker/setup-docker@v2
-      with:
-        dockerfile: Dockerfile  # Replace with your Dockerfile path
-
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: jokes-mini
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: user/jokes-mini:latest
 
   deploy:
     runs-on: ubuntu-latest
-
+    if: ${{ steps.build.outcome == 'success' }}
     steps:
     - name: Deploy using webhook
       env:
         deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-      if: ${{ steps.build.outcome == 'success' }}
+
       run: |
         curl -x POST "$deploy_url"
-        # Add your deployment script or call the webhook here
-        # Replace the following line with your actual deployment command or webhook call
-        echo "Deployment script or webhook call goes here"
+       
 
 
 
