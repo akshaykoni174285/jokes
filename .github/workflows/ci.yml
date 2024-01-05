@@ -27,7 +27,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/jokes-mini:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/jokes-mini:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -37,7 +37,7 @@ jobs:
         deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
 
       run: |
-        curl -x POST "$deploy_url"
+        curl "$deploy_url"
        
 
 
