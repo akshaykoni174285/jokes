@@ -20,10 +20,11 @@ jobs:
         dockerfile: Dockerfile  # Replace with your Dockerfile path
 
     - name: Build and push Docker image
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v5
       with:
+        context: .
         push: true
-        tags: docker.io/jokes-mini:latest
+        tags: jokes-mini
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -35,8 +36,9 @@ jobs:
     - name: Deploy using webhook
       env:
         deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+      if: ${{ steps.build.outcome == 'success' }}
       run: |
-        curl "$deploy_url"
+        curl -x POST "$deploy_url"
         # Add your deployment script or call the webhook here
         # Replace the following line with your actual deployment command or webhook call
         echo "Deployment script or webhook call goes here"
