@@ -45,6 +45,8 @@ app.get('/jokes/:id', (req, res) => {
 // });
 
 
+// some change
+
 app.get('/filter/:type', (req, res) => {
   const paraString = req.params.type;
   const foundjoke = jokes.filter((joke) => joke.jokeType.toLocaleLowerCase() === paraString.toLocaleLowerCase());
